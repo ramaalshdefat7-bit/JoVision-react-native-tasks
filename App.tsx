@@ -9,13 +9,15 @@ import Task21 from './Tasks/Task21';
 import Task22 from './Tasks/Task22';
 import Task23 from './Tasks/Task23';
 import Task24 from './Tasks/Task24';
-import Task25 from './Tasks/Task25'; import Task26 from './Tasks/Task26';
+import Task25 from './Tasks/Task25';
+import Task26 from './Tasks/Task26';
+import Task27 from './Tasks/Task27';
  
 export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      <Task26 />
+      <Task27 />
     </SafeAreaView>
   );
 }
