@@ -17,7 +17,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      <Task27 />
+      <Task27/>
     </SafeAreaView>
   );
 }
