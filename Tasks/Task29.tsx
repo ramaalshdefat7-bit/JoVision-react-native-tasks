@@ -1,4 +1,3 @@
-
 import React, {useRef, useState} from 'react';
 import {
   View,
@@ -9,7 +8,6 @@ import {
   Alert,
   StyleSheet,
   Button,
-  Modal,
   TextInput,
 } from 'react-native';
 
@@ -27,14 +25,14 @@ const images = [
 ];
 
 export default function Task29() {
-  const [modalVisible, setModalVisible] = useState(false);
   const [imageNumber, setImageNumber] = useState('');
-  const scrollRef = useRef<ScrollView>(null);
+  const imageRefs = useRef<any[]>([]);
 
   const goToImage = () => {
     const number = Number(imageNumber);
 
     if (
+      imageNumber.trim() === '' ||
       !Number.isInteger(number) ||
       number < 1 ||
       number > images.length
@@ -43,37 +41,44 @@ export default function Task29() {
       return;
     }
 
-    scrollRef.current?.scrollTo({
-      x: (number - 1) * 166,
-      animated: true,
-    });
+    Alert.alert(
+      'Image Selected',
+      `You selected image number ${number}.`,
+    );
 
-    setModalVisible(false);
     setImageNumber('');
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Task 29 - Find an Image</Text>
+      <Text style={styles.title}>Task 29 - Image List</Text>
 
-      <Button
-        title="Go to Image Number"
-        onPress={() => setModalVisible(true)}
+      <Text style={styles.instruction}>
+        Enter an image number from 1 to 10
+      </Text>
+
+      <TextInput
+        style={styles.input}
+        value={imageNumber}
+        onChangeText={setImageNumber}
+        keyboardType="number-pad"
+        placeholder="Image number"
       />
 
+      <Button title="Find Image" onPress={goToImage} />
+
       <ScrollView
-        ref={scrollRef}
-        horizontal
-        showsHorizontalScrollIndicator
-        style={styles.scroll}
-      >
+  horizontal
+  showsHorizontalScrollIndicator
+  style={styles.scroll}
+>
         {images.map((image, index) => (
           <TouchableOpacity
             key={index}
             onPress={() =>
               Alert.alert(
                 'Image Selected',
-                `You have selected image : ${index + 1}`,
+                `You selected image number ${index + 1}.`,
               )
             }
           >
@@ -82,45 +87,13 @@ export default function Task29() {
               style={styles.image}
               resizeMode="cover"
             />
+
             <Text style={styles.number}>
               Image {index + 1}
             </Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
-
-      <Modal
-        visible={modalVisible}
-        transparent
-        animationType="slide"
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>
-              Enter image number (1-10)
-            </Text>
-
-            <TextInput
-              style={styles.input}
-              value={imageNumber}
-              onChangeText={setImageNumber}
-              keyboardType="number-pad"
-              placeholder="Image number"
-            />
-
-            <Button title="Go" onPress={goToImage} />
-
-            <View style={styles.space} />
-
-            <Button
-              title="Cancel"
-              onPress={() => setModalVisible(false)}
-              color="#777777"
-            />
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 }
@@ -128,8 +101,8 @@ export default function Task29() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
     paddingVertical: 20,
   },
   title: {
@@ -138,9 +111,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
   },
+  instruction: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#888888',
+    borderRadius: 8,
+    padding: 10,
+    marginHorizontal: 25,
+    marginBottom: 12,
+    fontSize: 18,
+  },
   scroll: {
     flexGrow: 0,
-    marginTop: 20,
+    marginTop: 25,
   },
   image: {
     width: 150,
@@ -152,32 +139,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     marginTop: 8,
-  },
-  modalBackground: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    padding: 25,
-  },
-  modalContent: {
-    backgroundColor: '#FFFFFF',
-    padding: 20,
-    borderRadius: 12,
-  },
-  modalTitle: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginBottom: 15,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#888888',
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 15,
-    fontSize: 18,
-  },
-  space: {
-    height: 10,
   },
 });
